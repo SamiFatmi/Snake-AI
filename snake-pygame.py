@@ -22,7 +22,7 @@ while True :
             sys.exit()
     
     # surfaces
-    window.fill(pygame.Color('green'))
+    window.fill((138,250,120))
 
 
     # displaying elements 
