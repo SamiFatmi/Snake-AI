@@ -24,7 +24,6 @@ while True :
     # surfaces
     window.fill(pygame.Color('green'))
 
-    window.blit(test_surface,(150,150))
 
     # displaying elements 
     pygame.display.update()
