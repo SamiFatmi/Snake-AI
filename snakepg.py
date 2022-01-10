@@ -1,4 +1,5 @@
 import pygame, sys, random
+from pygame.constants import K_DOWN, K_LEFT, K_RIGHT, K_UP, KEYDOWN
 from pygame.math import Vector2 
 
 class SNAKE : 
@@ -55,6 +56,16 @@ while True :
         
         if event.type == SCREEN_UPDATE :
             snake.move_snake()
+        
+        if event.type == KEYDOWN : 
+            if event.key == K_UP:
+                snake.direction = Vector2(0,-1)
+            if event.key == K_DOWN:
+                snake.direction = Vector2(0,1)
+            if event.key == K_RIGHT:
+                snake.direction = Vector2(1,0)
+            if event.key == K_LEFT:
+                snake.direction = Vector2(-1,0) 
     
     # surfaces
     window.fill((138,250,120))
