@@ -27,20 +27,46 @@ class FRUIT :
         fruit_rect = pygame.Rect(self.position.x*cell_size,self.position.y*cell_size,cell_size,cell_size )
         pygame.draw.rect(window,pygame.Color('red'),fruit_rect)
 
+class MAIN :
+    def __init__(self) -> None:
+        self.snake = SNAKE()
+        self.fruit = FRUIT()
+
+    def update(self):
+        self.snake.move_snake() 
+        self.check_collision()
+
+    def draw_elements(self):
+        self.snake.draw_snake()
+        self.fruit.draw_square()
+
+    def check_collision(self):
+        # check if the fruit is eaten 
+        if self.snake.body[0] == self.fruit.position :
+            self.snake.body.insert(0,self.fruit.position)
+            while True:
+                self.fruit = FRUIT()
+                if self.fruit.position not in self.snake.body :
+                    break
+
+    
+        # make the snake 1 square longer 
+        # generate a new fruit
+
 #pygame init 
 pygame.init()
+
 
 #window creation 
 cell_size = 30
 num_cells = 20
 window = pygame.display.set_mode((cell_size*num_cells,cell_size*num_cells))
 
+#game 
+main_game = MAIN()
+
 #display rate
 clock = pygame.time.Clock()
-
-#objects
-fruit = FRUIT()
-snake = SNAKE()
 
 #screen update for user input
 SCREEN_UPDATE = pygame.USEREVENT
@@ -55,22 +81,21 @@ while True :
             sys.exit()
         
         if event.type == SCREEN_UPDATE :
-            snake.move_snake()
+            main_game.update()
         
         if event.type == KEYDOWN : 
             if event.key == K_UP:
-                snake.direction = Vector2(0,-1)
+                main_game.snake.direction = Vector2(0,-1)
             if event.key == K_DOWN:
-                snake.direction = Vector2(0,1)
+                main_game.snake.direction = Vector2(0,1)
             if event.key == K_RIGHT:
-                snake.direction = Vector2(1,0)
+                main_game.snake.direction = Vector2(1,0)
             if event.key == K_LEFT:
-                snake.direction = Vector2(-1,0) 
+                main_game.snake.direction = Vector2(-1,0) 
     
     # surfaces
     window.fill((138,250,120))
-    fruit.draw_square()
-    snake.draw_snake()
+    main_game.draw_elements( )
 
     # displaying elements 
     pygame.display.update()
