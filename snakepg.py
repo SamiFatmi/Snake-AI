@@ -41,7 +41,6 @@ class MAIN :
         self.fruit.draw_square()
 
     def check_collision(self):
-        # check if the fruit is eaten 
         if self.snake.body[0] == self.fruit.position :
             self.snake.body.insert(0,self.fruit.position)
             while True:
@@ -49,9 +48,6 @@ class MAIN :
                 if self.fruit.position not in self.snake.body :
                     break
 
-    
-        # make the snake 1 square longer 
-        # generate a new fruit
 
 #pygame init 
 pygame.init()
