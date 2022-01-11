@@ -4,7 +4,7 @@ from pygame.math import Vector2
 
 class SNAKE : 
     def __init__(self) -> None:
-        self.body = [Vector2(10,10),Vector2(11,10),Vector2(12,10)]
+        self.body = [Vector2(12,10),Vector2(11,10),Vector2(10,10)]
         self.direction = Vector2(1,0)
  
     def draw_snake(self):
@@ -35,6 +35,7 @@ class MAIN :
     def update(self):
         self.snake.move_snake() 
         self.check_collision()
+        self.check_fail()
 
     def draw_elements(self):
         self.snake.draw_snake()
@@ -47,6 +48,19 @@ class MAIN :
                 self.fruit = FRUIT()
                 if self.fruit.position not in self.snake.body :
                     break
+    
+    def check_fail(self):
+        # check if outside screen 
+        if self.snake.body[0].x < 0 or self.snake.body[0].x > num_cells -1 or self.snake.body[0].y < 0 or self.snake.body[0].y > num_cells -1 :
+            self.game_over()
+
+        if self.snake.body[0] in self.snake.body[2:] :
+            self.game_over()
+
+
+    def game_over(self):
+        pygame.quit()
+        sys.exit
 
 
 #pygame init 
@@ -66,7 +80,7 @@ clock = pygame.time.Clock()
 
 #screen update for user input
 SCREEN_UPDATE = pygame.USEREVENT
-pygame.time.set_timer(SCREEN_UPDATE,150)
+pygame.time.set_timer(SCREEN_UPDATE,100)
 
 #game loop 
 while True : 
@@ -80,13 +94,13 @@ while True :
             main_game.update()
         
         if event.type == KEYDOWN : 
-            if event.key == K_UP:
+            if event.key == K_UP and main_game.snake.direction.y != 1 :
                 main_game.snake.direction = Vector2(0,-1)
-            if event.key == K_DOWN:
+            if event.key == K_DOWN and main_game.snake.direction.y != -1 :
                 main_game.snake.direction = Vector2(0,1)
-            if event.key == K_RIGHT:
+            if event.key == K_RIGHT and main_game.snake.direction.x != -1 :
                 main_game.snake.direction = Vector2(1,0)
-            if event.key == K_LEFT:
+            if event.key == K_LEFT and main_game.snake.direction.x != 1 :
                 main_game.snake.direction = Vector2(-1,0) 
     
     # surfaces
