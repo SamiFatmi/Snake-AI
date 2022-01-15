@@ -105,7 +105,7 @@ while True :
     
     # surfaces
     window.fill((138,250,120))
-    main_game.draw_elements( )
+    main_game.draw_elements()
 
     # displaying elements 
     pygame.display.update()
