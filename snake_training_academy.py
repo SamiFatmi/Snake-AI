@@ -1,4 +1,3 @@
-from cmath import rect
 import pygame, sys, random
 from pygame.math import Vector2
 
@@ -21,7 +20,31 @@ class SNAKE():
             box_rect = pygame.Rect(box.x*cell_size+self.limits[0],box.y*cell_size+self.limits[2],cell_size,cell_size)
             pygame.draw.rect(window,pygame.Color("blue"),box_rect)
 
+    def move_snake(self):
+        body_copy = self.body[:]
+        body_copy.insert(0,self.body[0]+self.direction)
+        self.body = body_copy[:-1]
 
+
+class FRUIT():
+    def __init__(self,screen=1) -> None:
+        self.screen = screen
+        self.limits = self.screen_limits()
+        self.x = random.randint(0,n_cells-1)
+        self.y = random.randint(0,n_cells-1)
+        self.position = Vector2(self.x,self.y)
+
+    def screen_limits(self):
+        if self.screen == 1 :
+            return x_gap,x_gap+game_dim,y_gap,y_gap+game_dim
+        elif self.screen == 2:
+            return x_gap*2+game_dim,2*(x_gap+game_dim),y_gap,y_gap+game_dim
+
+    def draw_fruit(self):
+        fruit_rect = pygame.Rect(self.limits[0]+self.position.x*cell_size,self.limits[2]+self.position.y*cell_size,cell_size,cell_size)
+        pygame.draw.rect(window,pygame.Color("red"),fruit_rect)
+
+    
 
 # settings
 
@@ -47,6 +70,11 @@ window = pygame.display.set_mode(dimensions_of_display)
 
 clock = pygame.time.Clock()
 
+# screen update 
+
+SCREEN_UPDATE = pygame.USEREVENT
+pygame.time.set_timer(SCREEN_UPDATE,100)
+
 
 #game loop 
 
@@ -55,6 +83,10 @@ while True :
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        if event.type == SCREEN_UPDATE :
+            snake1.move_snake()
+            snake2.move_snake()
 
     window.fill((230,230,230))
 
