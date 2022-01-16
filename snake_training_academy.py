@@ -64,10 +64,31 @@ class AI():
     def update(self):
         self.snake.move_snake()
         self.decide_direction()
+        self.check_death()
+        self.check_collision()
 
     def draw_elements(self):
         self.snake.draw_snake()
         self.fruit.draw_fruit()
+
+    def check_collision(self):
+        if self.snake.body[0] == self.fruit.position : 
+            self.snake.body.insert(0,self.fruit.position)
+            while True : 
+                self.fruit = FRUIT(self.screen)
+                if self.fruit.position not in self.snake.body :
+                    break
+
+    def check_death(self):
+        if self.snake.body[0] in self.snake.body[1:]:
+            self.game_over()
+
+        if self.snake.body[0][0] < 0 or self.snake.body[0][0] > n_cells-1 or self.snake.body[0][1] < 0 or self.snake.body[0][1] > n_cells-1 :
+            self.game_over()
+
+    def game_over(self):
+        self.snake = SNAKE(self.screen)
+        self.fruit = FRUIT(self.screen)
 
 
         
