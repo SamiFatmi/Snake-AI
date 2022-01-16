@@ -44,6 +44,36 @@ class FRUIT():
         fruit_rect = pygame.Rect(self.limits[0]+self.position.x*cell_size,self.limits[2]+self.position.y*cell_size,cell_size,cell_size)
         pygame.draw.rect(window,pygame.Color("red"),fruit_rect)
 
+
+class AI():
+    def __init__(self,screen = 1) -> None:
+        self.screen = screen
+        self.score = 0
+        self.weights = [0,0,0,0,0,0,0]
+        self.snake = SNAKE(screen)
+        self.fruit = FRUIT(screen)
+
+    def decide_direction(self):
+        while True :
+            direction = random.choice([Vector2(1,0),Vector2(-1,0),Vector2(0,1),Vector2(0,-1)])
+            if direction + self.snake.body[0] - self.snake.body[1] != Vector2(0,0):
+                self.snake.direction = direction
+                break
+
+
+    def update(self):
+        self.snake.move_snake()
+        self.decide_direction()
+
+    def draw_elements(self):
+        self.snake.draw_snake()
+        self.fruit.draw_fruit()
+
+
+        
+
+
+
     
 
 # settings
@@ -64,8 +94,9 @@ game_rects = [pygame.Rect(sp[0],sp[1],game_dim,game_dim) for sp in screen_positi
 
 pygame.init()
 
-snake1 = SNAKE()
-snake2 = SNAKE(2)
+agent1 = AI(1)
+agent2 = AI(2)
+
 window = pygame.display.set_mode(dimensions_of_display)
 
 clock = pygame.time.Clock()
@@ -85,16 +116,16 @@ while True :
             sys.exit()
 
         if event.type == SCREEN_UPDATE :
-            snake1.move_snake()
-            snake2.move_snake()
+            agent1.update()
+            agent2.update()
 
     window.fill((230,230,230))
 
     for game_screen in game_rects :
         pygame.draw.rect(window,(250,190,160),game_screen)
 
-    snake1.draw_snake()
-    snake2.draw_snake()
+    agent1.draw_elements()
+    agent2.draw_elements()
 
 
     pygame.display.update()
